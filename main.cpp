@@ -2,6 +2,7 @@
 #include <functional>
 #include <cmath>
 #include <numeric>
+#include <iostream>
 
 std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::function<std::vector<double>(std::vector<double>)> nabla_f){
 
@@ -60,7 +61,7 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
 
         //check convergence
 
-        std::vector<double> diff;
+        std::vector<double> diff = {};
 
         for(auto i = 0; i<xk.size();++i){
             diff.push_back(pow(xk_next[i]-xk[i],2));
@@ -76,5 +77,17 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
 
 
 int main(){
+    auto f = [](std::vector<double> x ){
+        return x[0]*x[1] + 4*pow(x[0],4) + pow(x[1],2) + 3*x[0];
+    };
+    auto nabla_f = [](std::vector<double> x)-> std::vector<double>{
+        return {x[1] + 16*pow(x[0],3) + 3, x[0] + 2*x[1]};
+    };
+
+    std::vector<double> result = gradient(f,nabla_f);
+
+    for(auto i : result){
+        std::cout << i << std::endl;
+    }
 
 }
