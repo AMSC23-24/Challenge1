@@ -51,8 +51,8 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
 
         double alpha = 1.;
 
-        auto norm = [](std::function<std::vector<double>(std::vector<double>)> f, std::vector<double> x){
-            return std::sqrt(std::inner_product(f(x).begin(),f(x).end(),f(x).begin(),0.));
+        auto norm = [](std::vector<double> v){
+            return std::sqrt(std::inner_product(v.begin(),v.end(),v.begin(),0.));
         };
 
         //save f(xk) and nabla_f(xk)
@@ -73,7 +73,7 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
 
             printvec(sum);
 
-            if(fxk - f(sum) >= sigma * alpha * norm(nabla_f,xk)){
+            if(fxk - f(sum) >= sigma * alpha * norm(diff_fxk)){
                 reach = true;
             }
             else{
