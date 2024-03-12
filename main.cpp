@@ -4,6 +4,26 @@
 #include <numeric>
 #include <iostream>
 
+std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::function<std::vector<double>(std::vector<double>)> nabla_f);
+
+void printvec(std::vector<double> v);
+
+int main(){
+    auto f = [](std::vector<double> x ){
+        return x[0]*x[1] + 4*pow(x[0],4) + pow(x[1],2) + 3*x[0];
+    };
+    auto nabla_f = [](std::vector<double> x)-> std::vector<double>{
+        return {x[1] + 16*pow(x[0],3) + 3, x[0] + 2*x[1]};
+    };
+
+    std::vector<double> result = gradient(f,nabla_f);
+
+    for(auto i : result){
+        std::cout << i << std::endl;
+    }
+
+}
+
 std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::function<std::vector<double>(std::vector<double>)> nabla_f){
 
     int k = 1;
@@ -35,6 +55,11 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
             return std::sqrt(std::inner_product(f(x).begin(),f(x).end(),f(x).begin(),0.));
         };
 
+        //save f(xk) and nabla_f(xk)
+
+        double fxk = f(xk);
+        std::vector<double> diff_fxk = nabla_f(xk);
+
         //initial guess for alpha
 
         alpha = 1;
@@ -43,9 +68,12 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
             std::vector <double> sum;
 
             for(int i = 0; i<xk.size(); ++i){
-                sum.push_back(xk[i] - alpha*nabla_f(xk)[i]);
+                sum.push_back(xk[i] - alpha*diff_fxk[i]);
             }
-            if(f(xk) - f(sum) >= sigma * alpha * norm(nabla_f,xk)){
+
+            printvec(sum);
+
+            if(fxk - f(sum) >= sigma * alpha * norm(nabla_f,xk)){
                 reach = true;
             }
             else{
@@ -75,19 +103,9 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
     return xk;
 }
 
-
-int main(){
-    auto f = [](std::vector<double> x ){
-        return x[0]*x[1] + 4*pow(x[0],4) + pow(x[1],2) + 3*x[0];
-    };
-    auto nabla_f = [](std::vector<double> x)-> std::vector<double>{
-        return {x[1] + 16*pow(x[0],3) + 3, x[0] + 2*x[1]};
-    };
-
-    std::vector<double> result = gradient(f,nabla_f);
-
-    for(auto i : result){
-        std::cout << i << std::endl;
+void printvec(std::vector<double> v){
+    for(auto elem : v){
+        std::cout << elem << std::endl;
     }
-
 }
+
