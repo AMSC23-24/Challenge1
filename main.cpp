@@ -42,7 +42,7 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
 
     //use armijo's rule
 
-    double sigma = 0.25;
+    double sigma = 0.01; //as sigma gets smaller, the resulting value is closer to the min. calculated through matlab, but convergence is slower!
 
     bool conv = false;
 
