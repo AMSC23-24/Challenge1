@@ -10,10 +10,10 @@ void printvec(std::vector<double> v);
 
 int main(){
     auto f = [](std::vector<double> x ){
-        return x[0]*x[1] + 4*pow(x[0],4) + pow(x[1],2) + 3*x[0];
+        return x[0]*x[1] + 4*x[0]*x[0]*x[0]*x[0] + x[1]*x[1] + 3*x[0];
     };
     auto nabla_f = [](std::vector<double> x)-> std::vector<double>{
-        return {x[1] + 16*pow(x[0],3) + 3, x[0] + 2*x[1]};
+        return {x[1] + 16*x[0]*x[0]*x[0] + 3, x[0] + 2*x[1]};
     };
 
     std::vector<double> result = gradient(f,nabla_f);
@@ -94,7 +94,7 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
             diff.push_back(pow(xk_next[i]-xk[i],2));
         }
 
-        if(k > k_max || abs(f(xk_next) - f(xk)) < eps_r || std::sqrt(std::accumulate(diff.begin(),diff.end(),0.)) < eps_s){
+        if(k > k_max || norm(nabla_f(xk_next)) < eps_r || std::sqrt(std::accumulate(diff.begin(),diff.end(),0.)) < eps_s){
             conv = true;
         }
 
@@ -108,5 +108,6 @@ void printvec(std::vector<double> v){
     for(auto elem : v){
         std::cout << elem << std::endl;
     }
+    std::cout << std::endl;
 }
 
