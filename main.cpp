@@ -17,10 +17,11 @@ int main(){
     };
 
     std::vector<double> result = gradient(f,nabla_f);
-
+    /*
     for(auto i : result){
         std::cout << i << std::endl;
     }
+    */
 
 }
 
@@ -47,10 +48,6 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
 
     while(!conv){
 
-        bool reach = false;
-
-        double alpha = 1.;
-
         auto norm = [](std::vector<double> v){
             return std::sqrt(std::inner_product(v.begin(),v.end(),v.begin(),0.));
         };
@@ -62,7 +59,9 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
 
         //initial guess for alpha
 
-        alpha = 1;
+        double alpha = 1.;
+
+        bool reach = false;
 
         while(!reach){
             std::vector <double> sum;
@@ -70,8 +69,6 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
             for(int i = 0; i<xk.size(); ++i){
                 sum.push_back(xk[i] - alpha*diff_fxk[i]);
             }
-
-            printvec(sum);
 
             if(fxk - f(sum) >= sigma * alpha * norm(diff_fxk)){
                 reach = true;
@@ -87,6 +84,8 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
             xk_next[i] = xk[i] - alpha * nabla_f(xk)[i];
         }
 
+        printvec(xk_next);
+
         //check convergence
 
         std::vector<double> diff = {};
@@ -98,6 +97,8 @@ std::vector<double> gradient(std::function<double(std::vector<double>)> f, std::
         if(k > k_max || abs(f(xk_next) - f(xk)) < eps_r || std::sqrt(std::accumulate(diff.begin(),diff.end(),0.)) < eps_s){
             conv = true;
         }
+
+        xk.swap(xk_next);
     }
 
     return xk;
