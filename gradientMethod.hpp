@@ -26,7 +26,7 @@ public:
     //class constructor
     gradientMethod(const fun_type fun, 
                    const dfun_type dfun,
-                   const std::vector<double> & init_guess, 
+                   const std::vector<double> init_guess, 
                    const unsigned int max_it, 
                    const double tol_step, 
                    const double tol_res,
