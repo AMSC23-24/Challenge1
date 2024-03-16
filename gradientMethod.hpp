@@ -12,27 +12,18 @@ private:
         const fun_type fun;
         const dfun_type dfun;
 
-        const std::vector<double> & init_guess;
+        const std::vector<double> init_guess;
 
         const unsigned int max_it; //maximum number of iterations
         const double tol_step; //tolerance for the difference between iterations
         const double tol_res; //tolerance for the residual of iterations
 
-        const double sigma = 0.25; //sigma value for the armijo rule
-        const double alpha_init = 1; //initial alpha value for the armijo rule
+        const double sigma; //sigma value for the armijo rule
+        const double alpha_init; //initial alpha value for the armijo rule
 
     } params;
 public:
     //class constructor
-    gradientMethod(const fun_type fun, 
-                   const dfun_type dfun,
-                   const std::vector<double> & init_guess, 
-                   const unsigned int max_it, 
-                   const double tol_step, 
-                   const double tol_res): params({fun,dfun,init_guess,max_it,tol_step,tol_res}){};
-
-
-    //class constructor, with sigma and alpha_init selection
     gradientMethod(const fun_type fun, 
                    const dfun_type dfun,
                    const std::vector<double> & init_guess, 

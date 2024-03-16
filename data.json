@@ -1,0 +1,9 @@
+{
+    "max_it": 100,
+    "tol_step": 1e-6,
+    "tol_res": 1e-6,
+    "start_x": 0.0,
+    "start_y": 0.0,
+    "sigma": 0.25,
+    "alpha_init": 1
+}

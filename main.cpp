@@ -1,4 +1,8 @@
 #include "gradientMethod.hpp"
+#include "json.hpp"
+#include <fstream>
+
+using json = nlohmann::json;
 
 int main(){
     auto f = [](std::vector<double> x ){
@@ -8,11 +12,28 @@ int main(){
         return {x[1] + 16*x[0]*x[0]*x[0] + 3, x[0] + 2*x[1]};
     };
 
-    gradientMethod method = gradientMethod(f,df,{0.,0.},100,1e-6,1e-6);
+    std::ifstream file("data.json");
+    json data = json::parse(file);
 
-    //gradientMethod method = gradientMethod(f,df,{0.,0.},100,1e-6,1e-6,0.25,1);
+    const unsigned int max_it = data.value("max_it",100);
+    const double tol_step = data.value("tol_step",1e-6);
+    const double tol_res = data.value("tol_res",1e-6);
+    const double sigma = data.value("sigma",0.25);
+    const double alpha_init = data.value("alpha_init",1);
 
-   double sol = method.minimize();
+    const double start_x = data.value("start_x",0.);
+    const double start_y = data.value("start_y",0.);
+
+    gradientMethod method = gradientMethod(f,
+                                           df,
+                                           {start_x,start_y},
+                                           max_it,
+                                           tol_step,
+                                           tol_res,
+                                           sigma,
+                                           alpha_init);
+
+    double sol = method.minimize();
 
 }
 
