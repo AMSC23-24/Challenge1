@@ -5,28 +5,22 @@
 
 std::vector<double> gradientMethod::minimize() const{
 
-    //initialize current number of iterations 
-
-    int k = 1;
+    int k = 1;     //initialize current number of iterations 
 
     //initialize current and next iteration
 
     std::vector<double> x = params.init_guess;
     std::vector<double> x_next = x;
 
-    //define norm function
-
-    auto norm = [](std::vector<double> v){
+    auto norm = [](std::vector<double> v){ //define norm function
         return std::sqrt(std::inner_product(v.begin(),v.end(),v.begin(),0.));
     };
 
-    //use armijo's rule
-    
-    bool conv = false;
+    bool method_conv = false; //initialize convergence bool
 
-    while(!conv){
+    while(!method_conv){
 
-        //save f(xk) and nabla_f(xk)
+        //save f(xk) and df(xk)
 
         double fx = params.fun(x);
         std::vector<double> dfx = params.dfun(x);
@@ -35,30 +29,32 @@ std::vector<double> gradientMethod::minimize() const{
 
         double alpha = params.alpha_init;
 
-        bool reach = false;
+        bool alpha_reach = false;
 
-        while(!reach){
-            std::vector <double> sum;
+        while(!alpha_reach){ //armijo rule
+            std::vector <double> sum; //temporary vector to check armijo rule
 
             for(int i = 0; i<x.size(); ++i){
                 sum.push_back(x[i] - alpha*dfx[i]);
             }
 
-            if(fx - params.fun(sum) >= params.sigma * alpha * norm(dfx)){
-                reach = true;
+            double norm_dfx = norm(dfx); //temp to store norm (prevents using pow)
+
+            if(fx - params.fun(sum) >= params.sigma * alpha * norm_dfx * norm_dfx){ //evaluate condition
+                alpha_reach = true;
             }
             else{
                 alpha = alpha / 2;
             }
         }
 
-        //we have the alpha, let's compute the next iteration
+        //with the current alpha, compute the next iteration
 
         for(size_t i = 0; i<x.size();++i){
             x_next[i] = x[i] - alpha * dfx[i];
         }
 
-        //check convergence
+        //evaluate convergence conditions
 
         std::vector<double> diff = {};
 
@@ -66,12 +62,17 @@ std::vector<double> gradientMethod::minimize() const{
             diff.push_back(pow(x_next[i]-x[i],2));
         }
 
-        if(k > params.max_it || norm(params.dfun(x_next)) < params.tol_res || std::sqrt(std::accumulate(diff.begin(),diff.end(),0.)) < params.tol_step){
-            conv = true;
+        if(k > params.max_it || 
+           norm(params.dfun(x_next)) < params.tol_res ||
+           std::sqrt(std::accumulate(diff.begin(),diff.end(),0.)) < params.tol_step){
+            method_conv = true;
+
+            return x_next;
         }
 
-        x.swap(x_next);
-    }
+        //advance to the next step
 
-    return x;
+        x.swap(x_next);
+        ++k;
+    }
 }

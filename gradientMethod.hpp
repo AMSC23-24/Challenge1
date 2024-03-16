@@ -31,6 +31,8 @@ public:
                    const double tol_step, 
                    const double tol_res): params({fun,dfun,init_guess,max_it,tol_step,tol_res}){};
 
+
+    //class constructor, with sigma and alpha_init selection
     gradientMethod(const fun_type fun, 
                    const dfun_type dfun,
                    const std::vector<double> & init_guess, 
