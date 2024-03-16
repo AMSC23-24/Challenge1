@@ -9,7 +9,9 @@ int main(){
         return {x[1] + 16*x[0]*x[0]*x[0] + 3, x[0] + 2*x[1]};
     };
 
-    gradientMethod method = gradientMethod(f,df,{0.,0.},100,1e-6,1e-6);
+    //gradientMethod method = gradientMethod(f,df,{0.,0.},100,1e-6,1e-6);
+
+    gradientMethod method = gradientMethod(f,df,{0.,0.},100,1e-6,1e-6,0.5,0.5);
 
     std::vector<double> sol = method.minimize();
 

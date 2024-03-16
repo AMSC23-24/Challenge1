@@ -21,9 +21,7 @@ std::vector<double> gradientMethod::minimize() const{
     };
 
     //use armijo's rule
-
-    double sigma = 0.01; //as sigma gets smaller, the resulting value is closer to the min. calculated through matlab, but convergence is slower!
-
+    
     bool conv = false;
 
     while(!conv){
@@ -33,9 +31,9 @@ std::vector<double> gradientMethod::minimize() const{
         double fx = params.fun(x);
         std::vector<double> dfx = params.dfun(x);
 
-        //initial guess for alpha
+        //initialize alpha
 
-        double alpha = 1.;
+        double alpha = params.alpha_init;
 
         bool reach = false;
 
@@ -46,7 +44,7 @@ std::vector<double> gradientMethod::minimize() const{
                 sum.push_back(x[i] - alpha*dfx[i]);
             }
 
-            if(fx - params.fun(sum) >= sigma * alpha * norm(dfx)){
+            if(fx - params.fun(sum) >= params.sigma * alpha * norm(dfx)){
                 reach = true;
             }
             else{
