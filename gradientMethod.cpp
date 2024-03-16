@@ -2,8 +2,9 @@
 #include <cmath>
 #include <vector>
 #include <numeric>
+#include <iostream>
 
-std::vector<double> gradientMethod::minimize() const{
+double gradientMethod::minimize() const{
 
     int k = 1;     //initialize current number of iterations 
 
@@ -18,7 +19,7 @@ std::vector<double> gradientMethod::minimize() const{
 
     bool method_conv = false; //initialize convergence bool
 
-    while(!method_conv){
+    while(k <= params.max_it){
 
         //save f(xk) and df(xk)
 
@@ -59,15 +60,30 @@ std::vector<double> gradientMethod::minimize() const{
         std::vector<double> diff = {};
 
         for(auto i = 0; i<x.size();++i){
-            diff.push_back(pow(x_next[i]-x[i],2));
+            diff.push_back((x_next[i]-x[i])*(x_next[i]-x[i]));
         }
 
-        if(k > params.max_it || 
+        if(k >= params.max_it || 
            norm(params.dfun(x_next)) < params.tol_res ||
-           std::sqrt(std::accumulate(diff.begin(),diff.end(),0.)) < params.tol_step){
+           norm(diff) < params.tol_step){
             method_conv = true;
 
-            return x_next;
+            //printing information about the result
+
+            double minimum = params.fun(x_next);
+
+            std::cout << "minimum: " << minimum << "\n\n"; 
+
+            std::cout << "minimum point:\n\n";
+
+            for(const auto & i : x_next){
+                std::cout << i << "\n";
+            }
+            std::cout << " \n";
+            std::cout << "number of iterations: " << k << std::endl;
+
+
+            return minimum;
         }
 
         //advance to the next step

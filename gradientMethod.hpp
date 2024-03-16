@@ -43,5 +43,5 @@ public:
                    const double alpha_init):params({fun,dfun,init_guess,max_it,tol_step,tol_res,sigma,alpha_init}){};
 
     //minimizes the function defined in the object
-    std::vector<double> minimize() const;
+    double minimize() const;
 };

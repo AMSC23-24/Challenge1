@@ -1,5 +1,4 @@
 #include "gradientMethod.hpp"
-#include <iostream>
 
 int main(){
     auto f = [](std::vector<double> x ){
@@ -13,10 +12,7 @@ int main(){
 
     gradientMethod method = gradientMethod(f,df,{0.,0.},100,1e-6,1e-6,0.5,0.5);
 
-    std::vector<double> sol = method.minimize();
-
-    std::cout << "minimum found: " << sol[0] << ","<< sol[1] << std::endl;
-    std::cout << "min. value: " << f(sol) <<std::endl;
+   double sol = method.minimize();
 
 }
 
