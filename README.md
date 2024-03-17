@@ -9,7 +9,7 @@ x_{k+1} = x_{k} − \alpha_k \nabla f(x_k) \quad k = 0,...,k_{max}
 \end{align}
 $$
 
-for any $ f : \mathbb{R}^n \rightarrow \mathbb{R} $
+for any $f : \mathbb{R}^n \rightarrow \mathbb{R}$
 
 
 ## Contents
