@@ -1,6 +1,7 @@
 #include "gradientMethod.hpp"
 #include "json.hpp"
 #include <fstream>
+#include <iostream>
 
 using json = nlohmann::json;
 
@@ -21,12 +22,11 @@ int main(){
     const double sigma = data.value("sigma",0.25);
     const double alpha_init = data.value("alpha_init",1);
 
-    const double start_x = data.value("start_x",0.);
-    const double start_y = data.value("start_y",0.);
+    std::vector<double> init_guess = data["init_guess"].get<std::vector<double>>();
 
     gradientMethod method = gradientMethod(f,
                                            df,
-                                           {start_x,start_y},
+                                           init_guess,
                                            max_it,
                                            tol_step,
                                            tol_res,
