@@ -1,8 +1,11 @@
 main: main.o gradientMethod.o
-	g++ -o main main.o gradientMethod.o -std=c++20 
+	g++ -o main main.o gradientMethod.o -g -std=c++20 
 
 main.o: main.cpp
 	g++ -c main.cpp -I../pacs-examples/Examples/include -std=c++20
 
 gradientMethod.o: gradientMethod.cpp gradientMethod.hpp
 	g++ -c gradientMethod.cpp
+
+clean:
+	$(RM) *.o
