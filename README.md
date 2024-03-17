@@ -34,4 +34,7 @@ $$
 
 ## Compilation instructions
 
-`make src/makefile` generates a main file inside the `src` directory to be ran
+```bash 
+make src/makefile 
+``` 
+Generates a main file inside the `src` directory to be ran

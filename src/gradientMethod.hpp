@@ -12,7 +12,7 @@ private:
         const fun_type fun;
         const dfun_type dfun;
 
-        const std::vector<double> init_guess;
+        const std::vector<double> init_guess; //initial minimum point
 
         const unsigned int max_it; //maximum number of iterations
         const double tol_step; //tolerance for the difference between iterations
@@ -33,6 +33,6 @@ public:
                    const double sigma,
                    const double alpha_init):params({fun,dfun,init_guess,max_it,tol_step,tol_res,sigma,alpha_init}){};
 
-    //minimizes the function defined in the object
+    //minimizes the function defined in the parameters
     double minimize() const;
 };

@@ -6,12 +6,17 @@
 using json = nlohmann::json;
 
 int main(){
+
+    //Define function and derivative
+
     auto f = [](std::vector<double> x ){
         return x[0]*x[1] + 4*x[0]*x[0]*x[0]*x[0] + x[1]*x[1] + 3*x[0];
     };
     auto df = [](std::vector<double> x)-> std::vector<double>{
         return {x[1] + 16*x[0]*x[0]*x[0] + 3, x[0] + 2*x[1]};
     };
+
+    //Parse json file for parameters
 
     std::ifstream file("data.json");
     json data = json::parse(file);
