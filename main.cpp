@@ -35,5 +35,7 @@ int main(){
 
     double sol = method.minimize();
 
+    return 0;
+
 }
 
