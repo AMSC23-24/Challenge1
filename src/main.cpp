@@ -18,7 +18,7 @@ int main(){
         return {x[1] + 16*x[0]*x[0]*x[0] + 3, x[0] + 2*x[1]};
     };
 
-    //Parse json file for parameters
+    //Parse json file for parameters and function
 
     std::ifstream file("data.json");
     json data = json::parse(file);
@@ -33,7 +33,7 @@ int main(){
 
     std::string fun = data.value("fun","0.");
 
-    //Muparser test
+    //Create muparser function (with two variables) -> TODO: extend
 
     mup::ParserX p;
 
@@ -51,7 +51,7 @@ int main(){
     auto muFun = [&x_val,&y_val,&p](std::vector<double> x){
         x_val = x[0];
         y_val = x[1];
-        return (double)p.Eval().GetFloat();
+        return static_cast<double>(p.Eval().GetFloat());
     };
 
     gradientMethod method = gradientMethod(muFun,
