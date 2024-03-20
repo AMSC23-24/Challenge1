@@ -2,6 +2,8 @@
 #include "json.hpp"
 #include <fstream>
 #include <iostream>
+#include "muparserx/mpParser.h"
+
 
 using json = nlohmann::json;
 
@@ -29,7 +31,30 @@ int main(){
 
     std::vector<double> init_guess = data["init_guess"].get<std::vector<double>>();
 
-    gradientMethod method = gradientMethod(f,
+    std::string fun = data.value("fun","0.");
+
+    //Muparser test
+
+    mup::ParserX p;
+
+    mup::Value x_val(0.);
+    mup::Value y_val(0.);
+
+    mup::Variable x_p(&x_val);
+    mup::Variable y_p(&y_val);
+
+    p.DefineVar("x",x_p);
+    p.DefineVar("y",y_p);
+    
+    p.SetExpr(fun);
+
+    auto muFun = [&x_val,&y_val,&p](std::vector<double> x){
+        x_val = x[0];
+        y_val = x[1];
+        return (double)p.Eval().GetFloat();
+    };
+
+    gradientMethod method = gradientMethod(muFun,
                                            df,
                                            init_guess,
                                            max_it,
