@@ -22,9 +22,13 @@ double gradientMethod::minimize() const{
         double fx = params.fun(x);
         std::vector<double> dfx = params.dfun(x);
 
-        double alpha = params.alpha_init;
+        std::vector<double> sk{};
+        
+        for(int i = 0; i < dfx.size(); ++i){
+            sk.push_back(-dfx[i]);
+        }
 
-        std::cout << "alpha: " << alpha << std::endl;
+        double alpha = params.alpha_init;
 
         bool alpha_reach = false;
 
@@ -32,18 +36,14 @@ double gradientMethod::minimize() const{
             std::vector <double> sum;
 
             for(int i = 0; i<x.size(); ++i){
-                sum.push_back(x[i] - alpha*dfx[i]);
+                sum.push_back(x[i] + alpha*sk[i]);
             }
-
-            double norm_dfx = norm(dfx);
 
             //evaluate condition and update alpha
 
-            if(fx - params.fun(sum) >= params.sigma * alpha * norm_dfx * norm_dfx){
+            if(params.fun(sum) - fx <= params.sigma * alpha * std::inner_product(dfx.begin(),dfx.end(),sk.begin(),0.)){
                 alpha_reach = true;
-                std::cout << "left: " << fx - params.fun(sum) << std::endl;
-                std::cout << "right: " << params.sigma * alpha * norm_dfx * norm_dfx;
-                std::cout << "reach, k : " << alpha_reach << "," << k << std::endl;
+                std::cout << alpha << std::endl;
             }
             else{
                 alpha = alpha / 2; 
