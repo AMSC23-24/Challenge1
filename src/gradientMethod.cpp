@@ -43,7 +43,7 @@ double gradientMethod::minimize() const{
 
             if(params.fun(sum) - fx <= params.sigma * alpha * std::inner_product(dfx.begin(),dfx.end(),sk.begin(),0.)){
                 alpha_reach = true;
-                std::cout << alpha << std::endl;
+                break;
             }
             else{
                 alpha = alpha / 2; 
@@ -65,8 +65,8 @@ double gradientMethod::minimize() const{
         }
 
         if(k >= params.max_it || 
-           norm(params.dfun(x_next)) < params.tol_res ||
-           norm(diff) < params.tol_step){
+            norm(params.dfun(x_next)) < params.tol_res ||
+            norm(diff) < params.tol_step){
             method_conv = true;
 
             //prints information about the result

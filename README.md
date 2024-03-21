@@ -19,18 +19,23 @@ for any $f : \mathbb{R}^n \rightarrow \mathbb{R}$
 $$
 \begin{align}
 \nonumber
-f(x_k) - f(x_k - \alpha_k \nabla f(x_k)) \geq \sigma \alpha_k ||\nabla(f(x_k))||^2
+f(x_k - \alpha_k \nabla f(x_k)) - f(x_k) \leq \sigma \alpha_k \nabla(f(x_k))^T \cdot (-\nabla(f(x_k)))
 \end{align}
 $$
 
 `data.json` contains the parameters for the gradientMethod class, namely:
-- $k_{max}$
-- The conditions for convergence, for the residual and the difference between iterations
+- The maximum number of iterations $k_{max}$
+- The tolerances for the residual and the step length, $\epsilon_r$ and $\epsilon_s$ respectively
 - The initial guess
 - $\sigma$ and $\alpha_0$ for the Armijo rule
+- The function to be minimized
 
 
-`main.cpp` defines the function to be minimized and its derivative, creates a gradientMethod object and finds a minimum
+`main.cpp` parses the `data.json` file, creates a gradientMethod object and finds the function minimum
+
+## Issues
+
+The gradient of the function to be minimized has to be defined in the source code.
 
 ## Compilation instructions
 
