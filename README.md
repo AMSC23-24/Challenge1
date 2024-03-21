@@ -9,12 +9,12 @@ x_{k+1} = x_{k} − \alpha_k \nabla f(x_k) \quad k = 0,...,k_{max}
 \end{align}
 $$
 
-for any $f : \mathbb{R}^n \rightarrow \mathbb{R}$
+for any $f : \mathbb{R}^n \rightarrow \mathbb{R}$.
 
 
 ## Contents
 
-`gradientMethod.cpp` contains the class that implements the gradient method, where $a_k$ is set to satisfy the Armijo Rule:
+`gradientMethod.cpp` contains the class that implements the gradient method, where $a_k$ is set at each iteration to satisfy the Armijo Rule:
 
 $$
 \begin{align}
@@ -23,23 +23,22 @@ f(x_k - \alpha_k \nabla f(x_k)) - f(x_k) \leq \sigma \alpha_k \nabla(f(x_k))^T \
 \end{align}
 $$
 
+`main.cpp` parses `data.json` for the method's parameters and the input functions (handled with muParserX), then creates and calls a gradientMethod object.
+
 `data.json` contains the parameters for the gradientMethod class, namely:
 - The maximum number of iterations $k_{max}$
 - The tolerances for the residual and the step length, $\epsilon_r$ and $\epsilon_s$ respectively
-- The initial guess
-- $\sigma$ and $\alpha_0$ for the Armijo rule
-- The function to be minimized
+- The initial guess $x_0$
+- The parameters $\sigma$ and $\alpha_0$ for the Armijo rule
+- The function to be minimized and its gradient
 
+## Caveats
 
-`main.cpp` parses the `data.json` file, creates a gradientMethod object and finds the function minimum
-
-## Issues
-
-The gradient of the function to be minimized has to be defined in the source code.
+Supports domains only up to $\mathbb{R}^2$, but the code can trivially be extended to any arbitrary dimension.
 
 ## Compilation instructions
 
 ```bash 
 make src/makefile 
 ``` 
-Generates a main file inside the `src` directory to be ran
+Generates a main file inside the `src` directory to be ran.

@@ -32,10 +32,16 @@ int main(){
     std::vector<double> init_guess = data["init_guess"].get<std::vector<double>>();
 
     std::string fun = data.value("fun","0.");
+    std::vector<std::string> dfun = data["dfun"].get<std::vector<std::string>>();
 
-    //Create muparser function (with two variables) -> TODO: extend
+    mup::ParserX p_fun; //initialize parser for function
+    std::vector<mup::ParserX> p_dfun; 
 
-    mup::ParserX p;
+    for(int i=0; i<init_guess.size();++i){ //initialize parser for gradient
+        p_dfun.emplace_back();
+    }
+
+    //initialize values and variables for both function and gradient
 
     std::vector<mup::Value> val_vec{};
     std::vector<mup::Variable> var_vec{};
@@ -48,20 +54,42 @@ int main(){
         var_vec.emplace_back(&val_vec[i]);
     }
 
-    p.DefineVar("x",&var_vec[0]);
-    p.DefineVar("y",&var_vec[1]);
-    
-    p.SetExpr(fun);
+    //associates variables with the respective parsers
 
-    auto muFun = [&val_vec,&p](std::vector<double> x){
+    p_fun.DefineVar("x",&var_vec[0]);
+    p_fun.DefineVar("y",&var_vec[1]);
+
+    p_dfun[0].DefineVar("x",&var_vec[0]);
+    p_dfun[0].DefineVar("y",&var_vec[1]);
+
+    p_dfun[1].DefineVar("x",&var_vec[0]);
+    p_dfun[1].DefineVar("y",&var_vec[1]);
+
+    //sets the functions for each parser
+
+    p_fun.SetExpr(fun);
+
+    p_dfun[0].SetExpr(dfun[0]);
+    p_dfun[1].SetExpr(dfun[1]);
+
+    //define function wrappers for function and gradient for use in gradientMethod
+
+    auto muFun = [&val_vec,&p_fun](std::vector<double> x){
         for(int i = 0; i<x.size();++i){
             val_vec[i]=x[i];
         }
-        return static_cast<double>(p.Eval().GetFloat());
+        return static_cast<double>(p_fun.Eval().GetFloat());
+    };
+
+    auto muDFun = [&val_vec,&p_dfun](std::vector<double> x)->std::vector<double>{
+        for(int i = 0; i<x.size();++i){
+            val_vec[i]=x[i];
+        }
+        return {static_cast<double>(p_dfun[0].Eval().GetFloat()),static_cast<double>(p_dfun[1].Eval().GetFloat())};
     };
 
     gradientMethod method = gradientMethod(muFun,
-                                           df,
+                                           muDFun,
                                            init_guess,
                                            max_it,
                                            tol_step,
