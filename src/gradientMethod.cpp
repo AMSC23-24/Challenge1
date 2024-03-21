@@ -24,6 +24,8 @@ double gradientMethod::minimize() const{
 
         double alpha = params.alpha_init;
 
+        std::cout << "alpha: " << alpha << std::endl;
+
         bool alpha_reach = false;
 
         while(!alpha_reach){ //Armijo rule
@@ -39,6 +41,9 @@ double gradientMethod::minimize() const{
 
             if(fx - params.fun(sum) >= params.sigma * alpha * norm_dfx * norm_dfx){
                 alpha_reach = true;
+                std::cout << "left: " << fx - params.fun(sum) << std::endl;
+                std::cout << "right: " << params.sigma * alpha * norm_dfx * norm_dfx;
+                std::cout << "reach, k : " << alpha_reach << "," << k << std::endl;
             }
             else{
                 alpha = alpha / 2; 
