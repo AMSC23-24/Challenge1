@@ -31,10 +31,7 @@ $$
 - The initial guess $x_0$
 - The parameters $\sigma$ and $\alpha_0$ for the Armijo rule
 - The function to be minimized and its gradient
-
-## Caveats
-
-Supports domains only up to $\mathbb{R}^2$, but the code can trivially be extended to any arbitrary dimension.
+- The variable for the function and the gradient
 
 ## Compilation instructions
 

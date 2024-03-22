@@ -4,7 +4,6 @@
 #include <iostream>
 #include "muparserx/mpParser.h"
 
-
 using json = nlohmann::json;
 
 int main(){
@@ -18,7 +17,7 @@ int main(){
         return {x[1] + 16*x[0]*x[0]*x[0] + 3, x[0] + 2*x[1]};
     };
 
-    //Parse json file for parameters and function
+    //Parse json file for parameters, functions and variables
 
     std::ifstream file("data.json");
     json data = json::parse(file);
@@ -56,7 +55,7 @@ int main(){
         var_vec.emplace_back(&val_vec[i]);
     }
 
-    //associates variables with the respective parsers
+    //associates variables with the respective identifiers, for each parser
 
     for(int i = 0; i< identifiers.size();++i){
         p_fun.DefineVar(identifiers[i],&var_vec[i]);
