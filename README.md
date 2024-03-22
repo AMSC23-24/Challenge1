@@ -31,7 +31,7 @@ $$
 - The initial guess $x_0$
 - The parameters $\sigma$ and $\alpha_0$ for the Armijo rule
 - The function to be minimized and its gradient
-- The variable for the function and the gradient
+- The variables for the function and the gradient
 
 ## Compilation instructions
 
