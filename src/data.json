@@ -6,5 +6,6 @@
     "sigma": 0.5,
     "alpha_init": 1,
     "fun":"x*y+4*x*x*x*x+y*y+3*x",
-    "dfun":["y+16*x*x*x+3","x+2*y"]
+    "dfun":["y+16*x*x*x+3","x+2*y"],
+    "vars":["x","y"]
 }

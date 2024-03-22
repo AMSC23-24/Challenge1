@@ -34,6 +34,8 @@ int main(){
     std::string fun = data.value("fun","0.");
     std::vector<std::string> dfun = data["dfun"].get<std::vector<std::string>>();
 
+    std::vector<std::string> identifiers = data["vars"].get<std::vector<std::string>>();
+
     mup::ParserX p_fun; //initialize parser for function
     std::vector<mup::ParserX> p_dfun; 
 
@@ -56,21 +58,23 @@ int main(){
 
     //associates variables with the respective parsers
 
-    p_fun.DefineVar("x",&var_vec[0]);
-    p_fun.DefineVar("y",&var_vec[1]);
+    for(int i = 0; i< identifiers.size();++i){
+        p_fun.DefineVar(identifiers[i],&var_vec[i]);
+    }
 
-    p_dfun[0].DefineVar("x",&var_vec[0]);
-    p_dfun[0].DefineVar("y",&var_vec[1]);
-
-    p_dfun[1].DefineVar("x",&var_vec[0]);
-    p_dfun[1].DefineVar("y",&var_vec[1]);
+    for(int i = 0; i<p_dfun.size();++i){
+        for(int j = 0; j<identifiers.size();++j){
+            p_dfun[i].DefineVar(identifiers[j],&var_vec[j]);
+        }
+    }
 
     //sets the functions for each parser
 
     p_fun.SetExpr(fun);
 
-    p_dfun[0].SetExpr(dfun[0]);
-    p_dfun[1].SetExpr(dfun[1]);
+    for(int i = 0; i<p_dfun.size();++i){
+        p_dfun[i].SetExpr(dfun[i]);
+    }
 
     //define function wrappers for function and gradient for use in gradientMethod
 
@@ -82,10 +86,14 @@ int main(){
     };
 
     auto muDFun = [&val_vec,&p_dfun](std::vector<double> x)->std::vector<double>{
+        std::vector<double> ret{};
         for(int i = 0; i<x.size();++i){
             val_vec[i]=x[i];
         }
-        return {static_cast<double>(p_dfun[0].Eval().GetFloat()),static_cast<double>(p_dfun[1].Eval().GetFloat())};
+        for(int i = 0; i<x.size();++i){
+            ret.push_back(static_cast<double>(p_dfun[i].Eval().GetFloat()));
+        }
+        return ret;
     };
 
     gradientMethod method = gradientMethod(muFun,
