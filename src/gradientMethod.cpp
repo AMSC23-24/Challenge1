@@ -15,8 +15,6 @@ double gradientMethod::minimize() const{
         return std::sqrt(std::inner_product(v.begin(),v.end(),v.begin(),0.));
     };
 
-    bool method_conv = false;
-
     while(k <= params.max_it){
 
         double fx = params.fun(x);
@@ -67,7 +65,6 @@ double gradientMethod::minimize() const{
         if(k >= params.max_it || 
             norm(params.dfun(x_next)) < params.tol_res ||
             norm(diff) < params.tol_step){
-            method_conv = true;
 
             //prints information about the result
 

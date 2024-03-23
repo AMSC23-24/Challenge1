@@ -42,7 +42,7 @@ int main(){
         p_dfun.emplace_back();
     }
 
-    //initialize values and variables for both function and gradient
+    //initialize values and variables
 
     std::vector<mup::Value> val_vec{};
     std::vector<mup::Variable> var_vec{};
