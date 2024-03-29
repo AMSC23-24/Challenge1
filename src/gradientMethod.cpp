@@ -89,4 +89,12 @@ double gradientMethod::minimize() const{
         x.swap(x_next);
         ++k;
     }
+    //@note What happens if the function does not converge?
+    //You should do something about it, like throwing an exception, or 
+    //have in the class a boolean variable to indicate if the function
+    //converged or not. For instance you can have a private variable
+    //bool converged = false; and set it to true when the function converges
+    //and then you can have a public method to check if the function converged
+    //or not. In any case, here you have a point where the function exits without returning
+    //anything, which is not good.
 }

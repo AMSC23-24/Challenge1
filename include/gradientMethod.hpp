@@ -32,7 +32,8 @@ public:
                    const double tol_res,
                    const double sigma,
                    const double alpha_init):params({fun,dfun,init_guess,max_it,tol_step,tol_res,sigma,alpha_init}){};
-
+//@note: I suggest to enuclete the parameters into sructs, you simplify the
+//       constructor and make it more readable and maintainable.
     //minimizes the function defined in the parameters
     double minimize() const;
 };
